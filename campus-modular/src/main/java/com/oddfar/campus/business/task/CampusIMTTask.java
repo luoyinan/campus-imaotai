@@ -30,6 +30,7 @@ public class CampusIMTTask {
     @Async
     @Scheduled(cron = "0 10 1 ? * * ")
     public void updateUserMinuteBatch() {
+        logger.info("批量修改用户随机预约的时间");
         iUserService.updateUserMinuteBatch();
     }
 
@@ -40,8 +41,8 @@ public class CampusIMTTask {
     @Async
     @Scheduled(cron = "0 0/1 11 ? * *")
     public void getTravelRewardBatch() {
+        logger.info("批量获得旅行奖励");
         imtService.getTravelRewardBatch();
-
     }
 
     /**
@@ -50,8 +51,8 @@ public class CampusIMTTask {
     @Async
     @Scheduled(cron = "0 0/1 9 ? * *")
     public void reservationBatchTask() {
+        logger.info("预约开始");
         imtService.reservationBatch();
-
     }
 
 
@@ -74,6 +75,7 @@ public class CampusIMTTask {
     @Async
     @Scheduled(cron = "0 5 18 ? * * ")
     public void appointmentResults() {
+        logger.info("获取申购结果");
         imtService.appointmentResults();
     }
 

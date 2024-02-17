@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <!-- 日志存放路径 -->
-    <property name="log.path" value="~/logs"/>
+    <property name="log.path" value="./logs"/>
     <!-- 日志输出格式 -->
-    <property name="log.pattern" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{20} - [%method,%line] - %msg%n"/>
+    <property name="log.pattern" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] [%-5p] [%F:%L] - %m%n"/>
 
     <!-- 彩色日志 -->
     <!-- 配置格式变量：CONSOLE_LOG_PATTERN 彩色日志格式 -->
@@ -13,7 +13,7 @@
     <!-- white:白色 -->
     <!-- magenta:洋红 -->
     <property name="CONSOLE_LOG_PATTERN"
-              value="%yellow(%date{yyyy-MM-dd HH:mm:ss}) |%highlight(%-5level)  |%blue(%file:%line) |%cyan(%msg%n)"/>
+              value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] [%highlight(%-5level)] [%cyan(%logger{50}:%L)] - %msg%n"/>
 
 
     <!-- 控制台输出 -->
@@ -98,4 +98,4 @@
     <logger name="sys-user" level="info">
         <appender-ref ref="sys-user"/>
     </logger>
-</configuration> 
+</configuration>

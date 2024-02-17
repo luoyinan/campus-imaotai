@@ -9,6 +9,7 @@ import com.oddfar.campus.common.domain.PageResult;
 import com.oddfar.campus.common.exception.ServiceException;
 import com.oddfar.campus.common.utils.SecurityUtils;
 import com.oddfar.campus.common.utils.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 public class IUserServiceImpl implements IUserService {
     @Autowired
@@ -32,10 +34,8 @@ public class IUserServiceImpl implements IUserService {
 
     @Override
     public int insertIUser(Long mobile, String deviceId, JSONObject jsonObject) {
-        JSONObject data = jsonObject.getJSONObject("data");
-
+        // JSONObject data = jsonObject.getJSONObject("data");
         IUser user = iUserMapper.selectById(mobile);
-
         if (user != null) {
             //存在则更新
             IUser iUser = new IUser(mobile, jsonObject);
@@ -67,7 +67,6 @@ public class IUserServiceImpl implements IUserService {
 
     @Override
     public int insertIUser(IUser iUser) {
-
         IUser user = iUserMapper.selectById(iUser.getMobile());
         if (user != null) {
             throw new ServiceException("禁止重复添加");
