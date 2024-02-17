@@ -8,7 +8,7 @@
     </p>
     <p></p>
     <p>本项目免费，无任何盈利</p>
-    <p>项目完全开源，更新地址：https://github.com/oddfar/campus-imaotai</p>
+    <!--<p>项目完全开源，更新地址：https://github.com/oddfar/campus-imaotai</p>-->
 
     <el-card class="box-card">
       <p>版本情况:</p>
