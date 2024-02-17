@@ -55,7 +55,7 @@ public class IItem {
         this.itemCode = item.getString("itemCode");
         this.title =  item.getString("title");;
         this.content =  item.getString("content");;
-        this.picture =  item.getString("picture");;
+        this.picture =  item.getString("pictureV2");;
         this.createTime = new Date();
     }
 }
