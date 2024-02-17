@@ -28,13 +28,13 @@ public class SwaggerConfig {
     /**
      * 是否开启swagger
      */
-    @Value("${swagger.enabled}")
+    @Value("${swagger.enabled:false}")
     private boolean enabled;
 
     /**
      * 版本情况
      */
-    @Value("${campus.version}")
+    @Value("${campus.version:}")
     private String version;
 
     /**
