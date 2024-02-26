@@ -111,9 +111,9 @@
         <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="50" align="center" />
           <el-table-column label="用户编号" align="center" key="userId" prop="userId" v-if="columns[0].visible" />
-          <el-table-column label="用户名称" align="center" key="userName" prop="userName" v-if="columns[1].visible" :show-overflow-tooltip="true" />
-          <el-table-column label="用户昵称" align="center" key="nickName" prop="nickName" v-if="columns[2].visible" :show-overflow-tooltip="true" />
-          <el-table-column label="手机号码" align="center" key="phonenumber" prop="phonenumber" v-if="columns[3].visible" width="120" />
+          <el-table-column label="用户名称" align="center" key="userName" prop="userName" v-if="columns[1].visible" :show-overflow-tooltip="true"  />
+          <el-table-column label="用户昵称" align="center" key="nickName" prop="nickName" v-if="columns[2].visible" :show-overflow-tooltip="true"  />
+          <el-table-column label="手机号码" align="center" key="phonenumber" prop="phonenumber" v-if="columns[3].visible"  />
           <el-table-column label="状态" align="center" key="status" v-if="columns[4].visible">
             <template slot-scope="scope">
               <el-switch
@@ -124,10 +124,12 @@
               ></el-switch>
             </template>
           </el-table-column>
-          <el-table-column label="创建时间" align="center" prop="createTime" v-if="columns[5].visible" width="160">
+          <el-table-column label="创建时间" align="center" prop="createTime" v-if="columns[5].visible" >
             <template slot-scope="scope">
               <span>{{ parseTime(scope.row.createTime) }}</span>
             </template>
+          </el-table-column>
+          <el-table-column label="失效日期" align="center" key="expireDate" prop="expireDate" v-if="columns[6].visible">
           </el-table-column>
           <el-table-column
             label="操作"
@@ -172,7 +174,7 @@
           :limit.sync="queryParams.pageSize"
           @pagination="getList"
         />
-      
+
 
 
     <!-- 添加或修改用户配置对话框 -->
@@ -247,7 +249,17 @@
             </el-form-item>
           </el-col>
         </el-row>
-
+        <el-row>
+          <el-form-item label="到期时间" prop="expireTime">
+            <el-date-picker
+              v-model="form.expireDate"
+              type="date"
+              value-format="yyyy-MM-dd"
+              placeholder="选择日期时间"
+            >
+            </el-date-picker>
+          </el-form-item>
+        </el-row>
         <el-row>
           <el-col :span="24">
             <el-form-item label="备注">
@@ -368,7 +380,8 @@ export default {
         { key: 2, label: `用户昵称`, visible: true },
         { key: 3, label: `手机号码`, visible: true },
         { key: 4, label: `状态`, visible: true },
-        { key: 5, label: `创建时间`, visible: true }
+        { key: 5, label: `创建时间`, visible: true },
+        { key: 6, label: `失效日期`, visible: true }
       ],
       // 表单校验
       rules: {
@@ -446,6 +459,7 @@ export default {
         phonenumber: undefined,
         email: undefined,
         sex: undefined,
+        expireDate: undefined,
         status: "0",
         remark: undefined,
         postIds: [],
