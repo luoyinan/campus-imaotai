@@ -3,12 +3,14 @@ package com.oddfar.campus.common.domain.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.oddfar.campus.common.domain.BaseEntity;
 import com.oddfar.campus.common.validator.Xss;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -70,7 +72,14 @@ public class SysUserEntity extends BaseEntity  {
     private String loginIp;
 
     /** 最后登录时间 */
+    @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date loginDate;
+
+    /** 到期日期 */
+    @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    private Date expireDate;
 
     /** 备注 */
     private String remark;

@@ -44,7 +44,6 @@ public class SysUserController {
     @PreAuthorize("@ss.hasPermi('system:user:list')")
     public R page(SysUserEntity sysUserEntity) {
         PageResult<SysUserEntity> page = userService.page(sysUserEntity);
-
         return R.ok().put(page);
     }
 
@@ -73,7 +72,6 @@ public class SysUserController {
     @PreAuthorize("@ss.hasPermi('system:user:add')")
     public R add(@Validated @RequestBody SysUserEntity sysUserEntity) {
         userService.insertUser(sysUserEntity);
-
         return R.ok();
     }
 

@@ -15,6 +15,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
+
 /**
  * 用户验证处理
  *
@@ -45,10 +49,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         } else if (UserStatusEnum.DISABLE.getCode().equals(user.getStatus())) {
             log.info("登录用户：{} 已被停用.", username);
             throw new ServiceException("对不起，您的账号：" + username + " 已停用");
+        } else if(StringUtils.isNotNull(user.getExpireDate()) && LocalDate.now().isAfter(user.getExpireDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate())){
+            log.info("登录用户：{} 已过期.", username);
+            throw new ServiceException("对不起，您的账号：" + username + " 已过期");
         }
-
         passwordService.validate(user);
-
         return createLoginUser(user);
     }
 
