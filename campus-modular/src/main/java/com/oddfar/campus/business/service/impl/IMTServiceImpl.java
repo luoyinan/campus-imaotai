@@ -295,6 +295,22 @@ public class IMTServiceImpl implements IMTService {
     }
 
     /**
+     * 获取累计申购奖励
+     *
+     * @param iUser
+     */
+    @Override
+    public void getCumulatively(IUser iUser) {
+        // 10点才能领取旅行奖励
+        int hour = DateUtil.hour(new Date(), true);
+        if (!(9 <= hour && hour < 20)) {
+            String message = "活动未开始，开始时间9点-20点";
+            throw new ServiceException(message);
+        }
+
+    }
+
+    /**
      * 获得旅行奖励
      *
      * @param iUser

@@ -41,7 +41,6 @@ public class IUserController {
     @PreAuthorize("@ss.resourceAuth()")
     public R list(IUser iUser) {
         PageResult<IUser> page = iUserService.page(iUser);
-
         return R.ok().put(page);
     }
 
@@ -52,7 +51,6 @@ public class IUserController {
     @PreAuthorize("@ss.resourceAuth()")
     public R sendCode(String mobile, String deviceId) {
         imtService.sendCode(mobile, deviceId);
-
         return R.ok();
     }
 

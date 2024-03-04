@@ -34,7 +34,6 @@ public class IShopController {
     @GetMapping("/list")
     public R list(IShop iShop) {
         PageResult<IShop> page = iShopMapper.selectPage(iShop);
-
         return R.ok().put(page);
     }
 
