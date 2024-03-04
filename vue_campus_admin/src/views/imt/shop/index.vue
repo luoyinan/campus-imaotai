@@ -32,22 +32,22 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="地区" prop="districtName">
+      <!-- <el-form-item label="地区" prop="districtName">
         <el-input
           v-model="queryParams.districtName"
           placeholder="请输入地区"
           clearable
           @keyup.enter.native="handleQuery"
         />
-      </el-form-item>
-      <!-- <el-form-item label="完整地址" prop="fullAddress">
+      </el-form-item> -->
+      <el-form-item label="完整地址" prop="fullAddress">
         <el-input
           v-model="queryParams.fullAddress"
           placeholder="请输入完整地址"
           clearable
           @keyup.enter.native="handleQuery"
         />
-      </el-form-item> -->
+      </el-form-item>
       <!-- <el-form-item label="纬度" prop="lat">
         <el-input
           v-model="queryParams.lat"
@@ -64,14 +64,14 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item> -->
-      <!-- <el-form-item label="名称" prop="name">
+      <el-form-item label="名称" prop="name">
         <el-input
           v-model="queryParams.name"
           placeholder="请输入名称"
           clearable
           @keyup.enter.native="handleQuery"
         />
-      </el-form-item> -->
+      </el-form-item>
       <el-form-item label="公司名称" prop="tenantName">
         <el-input
           v-model="queryParams.tenantName"
