@@ -22,7 +22,7 @@ public interface IUserMapper extends BaseMapperX<IUser> {
                 .eqIfPresent(IUser::getMobile, iUser.getMobile())
                 .eqIfPresent(IUser::getProvinceName, iUser.getProvinceName())
                 .betweenIfPresent(IUser::getExpireTime, iUser.getParams())
-                .orderByAsc(IUser::getCreateTime)
+                .orderByDesc(IUser::getCreateTime)
         );
 
     }
@@ -35,7 +35,7 @@ public interface IUserMapper extends BaseMapperX<IUser> {
                 .eqIfPresent(IUser::getProvinceName, iUser.getProvinceName())
                 .eq(IUser::getCreateUser, userId)
                 .betweenIfPresent(IUser::getExpireTime, iUser.getParams())
-                .orderByAsc(IUser::getCreateTime)
+                .orderByDesc(IUser::getCreateTime)
         );
 
     }
