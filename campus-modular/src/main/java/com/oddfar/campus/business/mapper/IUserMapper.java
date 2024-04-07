@@ -42,14 +42,13 @@ public interface IUserMapper extends BaseMapperX<IUser> {
 
     default List<IUser> selectReservationUser() {
         return selectList(new LambdaQueryWrapperX<IUser>()
-//                      .gt(IUser::getExpireTime, new Date())
-                        .ne(IUser::getLat, "")
-                        .ne(IUser::getLng, "")
-                        .ne(IUser::getItemCode, "")
-                        .isNotNull(IUser::getItemCode)
-
+                //.gt(IUser::getExpireTime, new Date())
+                .ne(IUser::getLat, "")
+                .ne(IUser::getLng, "")
+                .ne(IUser::getItemCode, "")
+                .isNotNull(IUser::getItemCode)
+                .isNotNull(IUser::getToken)
         );
-
     }
 
     /**
@@ -57,14 +56,16 @@ public interface IUserMapper extends BaseMapperX<IUser> {
      */
     default List<IUser> selectReservationUserByMinute(int minute) {
         return selectList(new LambdaQueryWrapperX<IUser>()
-                        .eq(IUser::getMinute, minute)
-//                      .gt(IUser::getExpireTime, new Date())
-                        .ne(IUser::getLat, "")
-                        .ne(IUser::getLng, "")
-                        .ne(IUser::getItemCode, "")
-                        .isNotNull(IUser::getItemCode)
+                .eq(IUser::getMinute, minute)
+                // .gt(IUser::getExpireTime, new Date())
+                .ne(IUser::getLat, "")
+                .ne(IUser::getLng, "")
+                .ne(IUser::getItemCode, "")
+                .isNotNull(IUser::getItemCode)
+                .isNotNull(IUser::getToken)
         );
     }
+
 
     @Update("UPDATE i_user SET `minute` = (SELECT FLOOR(RAND() * 50 + 1)) WHERE random_minute = \"0\"")
     void updateUserMinuteBatch();

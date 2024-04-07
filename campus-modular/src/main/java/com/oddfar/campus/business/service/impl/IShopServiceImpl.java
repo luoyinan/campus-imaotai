@@ -1,13 +1,13 @@
 package com.oddfar.campus.business.service.impl;
 
 import cn.hutool.core.convert.Convert;
-import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpUtil;
-import cn.hutool.http.Method;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONException;
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.oddfar.campus.business.constant.IMTCommonConstants;
+import com.oddfar.campus.business.constant.IMTUrlConstants;
 import com.oddfar.campus.business.domain.IMTItemInfo;
 import com.oddfar.campus.business.domain.MapPoint;
 import com.oddfar.campus.business.entity.IItem;
@@ -47,34 +47,26 @@ public class IShopServiceImpl extends ServiceImpl<IShopMapper, IShop> implements
 
     @Override
     public List<IShop> selectShopList() {
-
-        List<IShop> shopList = redisCache.getCacheList("mt_shop_list");
-
+        List<IShop> shopList = redisCache.getCacheList(IMTCommonConstants.IMT_SHOP_KEY);
         if (shopList != null && shopList.size() > 0) {
             return shopList;
         } else {
             refreshShop();
         }
-
         shopList = iShopMapper.selectList();
-
-
         return shopList;
     }
 
     //    @Async
     @Override
     public void refreshShop() {
-
-        HttpRequest request = HttpUtil.createRequest(Method.GET,
-                "https://static.moutai519.com.cn/mt-backend/xhr/front/mall/resource/get");
-
-        JSONObject body = JSONObject.parseObject(request.execute().body());
+        String res = HttpUtil.get(IMTUrlConstants.GET_SHOP_URL);
+        JSONObject body = JSONObject.parseObject(res);
         //获取shop的url
         String shopUrl = body.getJSONObject("data").getJSONObject("mtshops_pc").getString("url");
         //清空数据库
         iShopMapper.truncateShop();
-        redisCache.deleteObject("mt_shop_list");
+        redisCache.deleteObject(IMTCommonConstants.IMT_SHOP_KEY);
 
         String s = HttpUtil.get(shopUrl);
 
@@ -88,26 +80,27 @@ public class IShopServiceImpl extends ServiceImpl<IShopMapper, IShop> implements
             list.add(iShop);
         }
         this.saveBatch(list);
-        redisCache.setCacheList("mt_shop_list", list);
+        redisCache.setCacheList(IMTCommonConstants.IMT_SHOP_KEY, list);
     }
 
     @Override
     public String getCurrentSessionId() {
-        String mtSessionId = Convert.toStr(redisCache.getCacheObject("mt_session_id"));
+        String mtSessionId = Convert.toStr(redisCache.getCacheObject(IMTCommonConstants.IMT_SESSION_ID_KEY));
 
         long dayTime = LocalDate.now().atStartOfDay().toInstant(ZoneOffset.of("+8")).toEpochMilli();
         if (StringUtils.isNotEmpty(mtSessionId)) {
             return mtSessionId;
         }
 
-        String res = HttpUtil.get("https://static.moutai519.com.cn/mt-backend/xhr/front/mall/index/session/get/" + dayTime);
+        String url = IMTUrlConstants.GET_CURRENT_USER_SESSION.replace("{dayTime}",dayTime + "");
+        String res = HttpUtil.get(url);
         //替换 current_session_id 673 ['data']['sessionId']
         JSONObject jsonObject = JSONObject.parseObject(res);
 
         if (jsonObject.getString("code").equals("2000")) {
             JSONObject data = jsonObject.getJSONObject("data");
             mtSessionId = data.getString("sessionId");
-            redisCache.setCacheObject("mt_session_id", mtSessionId);
+            redisCache.setCacheObject(IMTCommonConstants.IMT_SESSION_ID_KEY, mtSessionId);
 
             iItemMapper.truncateItem();
             //item插入数据库
@@ -126,7 +119,7 @@ public class IShopServiceImpl extends ServiceImpl<IShopMapper, IShop> implements
 
     @Override
     public void refreshItem() {
-        redisCache.deleteObject("mt_session_id");
+        redisCache.deleteObject(IMTCommonConstants.IMT_SESSION_ID_KEY);
         getCurrentSessionId();
     }
 
@@ -156,11 +149,12 @@ public class IShopServiceImpl extends ServiceImpl<IShopMapper, IShop> implements
     }
 
     public List<IMTItemInfo> reGetShopsByProvince(String province, String itemId) {
-
         long dayTime = LocalDate.now().atStartOfDay().toInstant(ZoneOffset.of("+8")).toEpochMilli();
-
-        String url = "https://static.moutai519.com.cn/mt-backend/xhr/front/mall/shop/list/slim/v3/" + getCurrentSessionId() + "/" + province + "/" + itemId + "/" + dayTime;
-
+        String url = IMTUrlConstants.RE_GET_SHOPS_BY_PROVINCE_URL
+                .replace("{currentSessionId}", getCurrentSessionId())
+                .replace("{province}", province)
+                .replace("{itemId}", itemId)
+                .replace("{dayTime}", String.valueOf(dayTime));
         String urlRes = HttpUtil.get(url);
         JSONObject res = null;
         try {
@@ -194,10 +188,7 @@ public class IShopServiceImpl extends ServiceImpl<IShopMapper, IShop> implements
                     //添加
                     imtItemInfoList.add(iItem);
                 }
-
             }
-
-
         }
         return imtItemInfoList;
     }

@@ -3,17 +3,6 @@ package com.oddfar.campus.business.service;
 import com.oddfar.campus.business.entity.IUser;
 
 public interface IMTService {
-    /**
-     * 获取i茅台app版本号
-     *
-     * @return
-     */
-    String getMTVersion();
-
-    /**
-     * 刷新i茅台app版本号
-     */
-    void refreshMTVersion();
 
     /**
      * 发送手机验证码

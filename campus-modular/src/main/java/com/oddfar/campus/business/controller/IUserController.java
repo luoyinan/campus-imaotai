@@ -92,7 +92,6 @@ public class IUserController {
     @PreAuthorize("@ss.resourceAuth()")
     public R login(String mobile, String code, String deviceId) {
         imtService.login(mobile, code, deviceId);
-
         return R.ok();
     }
 
